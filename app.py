@@ -3,7 +3,7 @@ from PIL import Image
 from modules.utility import login_warning
 from streamlit_login_auth_ui.widgets import __login__
 
-__login__obj = __login__(auth_token = "courier_auth_token",
+__login__obj = __login__(auth_token = "dk_prod_743TYK5ES04362MPF6FK345A5WR5",
                     company_name = "Shims",
                     width = 200, height = 250,
                     logout_button_name = 'Logout', hide_menu_bool = False,
