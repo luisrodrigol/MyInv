@@ -126,7 +126,7 @@ def main():
         
             
         
-        invop = c.execute('select upper(name),id from inventarios where id=?',[st.session_state.invid[0]]).fetchone()
+        invop = c.execute('select name,id from inventarios where id=?',[st.session_state.invid[0]]).fetchone()
         
         #tt = c.execute("select sum(valor) from inventario where inv_id=?",[st.session_state.invid[0]]).fetchone()
         st.subheader('🖥️ Myinv: '+ str(invop[0]).capitalize())
