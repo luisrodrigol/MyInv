@@ -344,8 +344,8 @@ def main():
             st.divider()
             st.subheader('📈Estatísticas')
 
-            pr = df.profile_report()
-            st_profile_report(pr)
+            #pr = df.profile_report()
+            #st_profile_report(pr)
             
         except Exception as e:
                 st.warning("Inventário vazio!", icon="⚠️")
