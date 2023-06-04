@@ -271,11 +271,11 @@ def main():
             vscard=ttea[0]-ttaa[0]
             
             
-            #locale.setlocale( locale.LC_ALL, '' )
-            #col1.metric(label="**Valor Total**", value=locale.currency(tt,grouping=True ))
-            #col2.metric(label=f"**{str(ea)} vs AA**", value=locale.currency(ttea[0],grouping=True ), delta=vscard)
-            #col3.metric(label=f"**Top Categoria: {str(top[0])}**", value=locale.currency(top[1],grouping=True),delta='KPI Estático')
-            #style_metric_cards()
+            locale.setlocale( locale.LC_ALL, '' )
+            col1.metric(label="**Valor Total**", value=locale.currency(tt,grouping=True ))
+            col2.metric(label=f"**{str(ea)} vs AA**", value=locale.currency(ttea[0],grouping=True ), delta=vscard)
+            col3.metric(label=f"**Top Categoria: {str(top[0])}**", value=locale.currency(top[1],grouping=True),delta='KPI Estático')
+            style_metric_cards()
             st.divider()
 
             col7, col8,col9 = st.columns([1,0.3,1.1])
