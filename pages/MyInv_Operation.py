@@ -126,7 +126,7 @@ def main():
         
             
         
-        invop = c.execute('select name,id from inventarios where id=?',[st.session_state.invid[0]]).fetchone()
+        invop = c.execute('select upper(name),id from inventarios where id=?',[st.session_state.invid[0]]).fetchone()
         
         #tt = c.execute("select sum(valor) from inventario where inv_id=?",[st.session_state.invid[0]]).fetchone()
         st.subheader('🖥️ Myinv: '+ str(invop[0]).capitalize())
@@ -178,7 +178,7 @@ def main():
                       else:
                         try:                            
                                 
-                            c.execute("INSERT INTO inventario (inv_id,descricao,categoria,local,ambiente,valor,data_aquisicao) values(?,?,?,?,?,?,?)",(st.session_state.invid[0],descricao,categoria,invop[0].upper(),ambiente,valor,datade)).connection.commit()
+                            c.execute("INSERT INTO inventario (inv_id,descricao,categoria,local,ambiente,valor,data_aquisicao) values(?,?,?,?,?,?,?)",(st.session_state.invid[0],descricao,categoria,invop[0],ambiente,valor,datade)).connection.commit()
                             st.success('Ativo adicionado com sucesso!')
 
                         except Exception as e:
