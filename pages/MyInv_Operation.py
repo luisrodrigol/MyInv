@@ -356,8 +356,8 @@ def main():
     except Exception as e:
              st.warning(
                      "Por gentileza, volte a página de gerenciamento e escolha um inventário!", icon="⚠️")
-                       st.warning("Error: {}".format(e))
-             pass
+    st.warning("Error: {}".format(e))
+    pass
 
 
 
