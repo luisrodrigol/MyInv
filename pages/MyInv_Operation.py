@@ -273,9 +273,9 @@ def main():
             
             try:
                 #locale.setlocale( locale.LC_ALL, "pt_BR.utf-8" )                        
-                col1.metric(label="**Valor Total**", value=locale.currency(tt,grouping=True ))
-                col2.metric(label=f"**{str(ea)} vs AA**", value=locale.currency(ttea[0],grouping=True ), delta=vscard)
-                col3.metric(label=f"**Top Categoria: {str(top[0])}**", value=locale.currency(top[1],grouping=True),delta='KPI Estático')            
+                col1.metric(label="**Valor Total**", value=tt)
+                col2.metric(label=f"**{str(ea)} vs AA**", value=ttea[0], delta=vscard)
+                col3.metric(label=f"**Top Categoria: {str(top[0])}**", value=top[1],delta='KPI Estático')            
                 style_metric_cards()
             except Exception as e:                  
                   st.warning("Error: {}".format(e)) 
