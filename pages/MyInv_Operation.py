@@ -251,7 +251,7 @@ def main():
         st.subheader('📊Dashboards')
 
         col1, col2, col3 = st.columns(3)
-        try:
+        #try:
             tt = sum(row[5] for row in exibir)
             
             top=c.execute('SELECT categoria, sum(valor) from inventario where inv_id =? GROUP by categoria order by sum(valor) desc',[st.session_state.invid[0]]).fetchone()
@@ -347,7 +347,7 @@ def main():
             pr = df.profile_report()
             st_profile_report(pr)
             
-        except Exception as e:
+        #except Exception as e:
                 st.warning("Inventário vazio!", icon="⚠️")
                 pass
         
