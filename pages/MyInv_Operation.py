@@ -252,104 +252,104 @@ def main():
 
         col1, col2, col3 = st.columns(3)
         #try:
-            tt = sum(row[5] for row in exibir)
-            
-            top=c.execute('SELECT categoria, sum(valor) from inventario where inv_id =? GROUP by categoria order by sum(valor) desc',[st.session_state.invid[0]]).fetchone()
-            
+        tt = sum(row[5] for row in exibir)
+        
+        top=c.execute('SELECT categoria, sum(valor) from inventario where inv_id =? GROUP by categoria order by sum(valor) desc',[st.session_state.invid[0]]).fetchone()
+        
 
-            ea=str(dt.date.today().strftime("%Y"))
-            aa=str((dt.date.today()- dt.timedelta(days=365)).strftime("%Y"))
-            
-            
-            
-            ttea=c.execute('SELECT sum(valor) from inventario where inv_id=?1 and strftime("%Y", date(data_aquisicao)) = ?2',(st.session_state.invid[0],ea)).fetchone()
-            
-            
-            
-            ttaa=c.execute('SELECT sum(valor) from inventario where inv_id=?1 and strftime("%Y", date(data_aquisicao)) = ?2',(st.session_state.invid[0],aa)).fetchone()
-            
-            vscard=ttea[0]-ttaa[0]
-            
-            
-            locale.setlocale( locale.LC_ALL, '' )
-            col1.metric(label="**Valor Total**", value=locale.currency(tt,grouping=True ))
-            col2.metric(label=f"**{str(ea)} vs AA**", value=locale.currency(ttea[0],grouping=True ), delta=vscard)
-            col3.metric(label=f"**Top Categoria: {str(top[0])}**", value=locale.currency(top[1],grouping=True),delta='KPI Estático')
-            style_metric_cards()
-            st.divider()
+        ea=str(dt.date.today().strftime("%Y"))
+        aa=str((dt.date.today()- dt.timedelta(days=365)).strftime("%Y"))
+        
+        
+        
+        ttea=c.execute('SELECT sum(valor) from inventario where inv_id=?1 and strftime("%Y", date(data_aquisicao)) = ?2',(st.session_state.invid[0],ea)).fetchone()
+        
+        
+        
+        ttaa=c.execute('SELECT sum(valor) from inventario where inv_id=?1 and strftime("%Y", date(data_aquisicao)) = ?2',(st.session_state.invid[0],aa)).fetchone()
+        
+        vscard=ttea[0]-ttaa[0]
+        
+        
+        locale.setlocale( locale.LC_ALL, '' )
+        col1.metric(label="**Valor Total**", value=locale.currency(tt,grouping=True ))
+        col2.metric(label=f"**{str(ea)} vs AA**", value=locale.currency(ttea[0],grouping=True ), delta=vscard)
+        col3.metric(label=f"**Top Categoria: {str(top[0])}**", value=locale.currency(top[1],grouping=True),delta='KPI Estático')
+        style_metric_cards()
+        st.divider()
 
-            col7, col8,col9 = st.columns([1,0.3,1.1])
-            with col7:                
-                 with chart_container(df):
-                     st.write('**Valor por Categ.**')
-                     st.bar_chart(data=df,x='CATEGORIA',y='VALOR')
+        col7, col8,col9 = st.columns([1,0.3,1.1])
+        with col7:                
+                with chart_container(df):
+                    st.write('**Valor por Categ.**')
+                    st.bar_chart(data=df,x='CATEGORIA',y='VALOR')
 
-                 with chart_container(df):
+                with chart_container(df):
                     st.write('**Valor por Ambiente**')
                     bars = alt.Chart(df).mark_bar().encode(
                     x='VALOR:Q',
                     y="AMBIENTE:O"
                         )
-                    
-                    text = bars.mark_text(
-                    align='left',
-                    baseline='middle',
-                    dx=3  # Nudges text to right so it doesn't appear on top of the bar
-                        ).encode(
-                    text='VALOR:Q'
-                        )
-                    
-                    chart = (bars + text)
-
-                    tab1, tab2 = st.tabs(["Tema Azul", "Tema Azul Escuro"])
-
-                    with tab1:
-                        st.altair_chart(chart, theme="streamlit", use_container_width=True)
-                    with tab2:
-                        st.altair_chart(chart, theme=None, use_container_width=True)
-                    
-            
-            with col9:             
-
-                with chart_container(df):
-                    st.write('**Share de Categoria**')
-                    base = alt.Chart(df).encode(
-                    theta=alt.Theta("VALOR:Q", stack=True),
-                    radius=alt.Radius("CATEGORIA", scale=alt.Scale(type="sqrt", zero=True, rangeMin=20)),
-                    color="CATEGORIA:N",
+                
+                text = bars.mark_text(
+                align='left',
+                baseline='middle',
+                dx=3  # Nudges text to right so it doesn't appear on top of the bar
+                    ).encode(
+                text='VALOR:Q'
                     )
+                
+                chart = (bars + text)
 
-                    c1 = base.mark_arc(innerRadius=20, stroke="#fff")
+                tab1, tab2 = st.tabs(["Tema Azul", "Tema Azul Escuro"])
 
-                    c2 = base.mark_text(radiusOffset=10).encode(text="VALOR:Q")
+                with tab1:
+                    st.altair_chart(chart, theme="streamlit", use_container_width=True)
+                with tab2:
+                    st.altair_chart(chart, theme=None, use_container_width=True)
+                
+        
+        with col9:             
 
-                    chart = c1 + c2
+            with chart_container(df):
+                st.write('**Share de Categoria**')
+                base = alt.Chart(df).encode(
+                theta=alt.Theta("VALOR:Q", stack=True),
+                radius=alt.Radius("CATEGORIA", scale=alt.Scale(type="sqrt", zero=True, rangeMin=20)),
+                color="CATEGORIA:N",
+                )
 
-                    tab1, tab2 = st.tabs(["Tema Padrão", "Tema Alternativo"])
+                c1 = base.mark_arc(innerRadius=20, stroke="#fff")
 
-                    with tab1:
-                        st.altair_chart(chart, theme="streamlit", use_container_width=True)
-                    with tab2:
-                        st.altair_chart(chart, theme=None, use_container_width=True)
+                c2 = base.mark_text(radiusOffset=10).encode(text="VALOR:Q")
 
-                with chart_container(df):
-                    st.write('**Mix de Ambientes**')                
-                    fig_category_percent=alt.Chart(df).mark_arc().encode(
-                    theta=alt.Theta(field="VALOR", type="quantitative"),
-                    color=alt.Color(field="AMBIENTE", type="nominal"))
-                    st.altair_chart(fig_category_percent)
+                chart = c1 + c2
 
+                tab1, tab2 = st.tabs(["Tema Padrão", "Tema Alternativo"])
+
+                with tab1:
+                    st.altair_chart(chart, theme="streamlit", use_container_width=True)
+                with tab2:
+                    st.altair_chart(chart, theme=None, use_container_width=True)
+
+            with chart_container(df):
+                st.write('**Mix de Ambientes**')                
+                fig_category_percent=alt.Chart(df).mark_arc().encode(
+                theta=alt.Theta(field="VALOR", type="quantitative"),
+                color=alt.Color(field="AMBIENTE", type="nominal"))
+                st.altair_chart(fig_category_percent)
+
+        
+
+        st.divider()
+        st.subheader('📈Estatísticas')
+
+        pr = df.profile_report()
+        st_profile_report(pr)
             
-
-            st.divider()
-            st.subheader('📈Estatísticas')
-
-            pr = df.profile_report()
-            st_profile_report(pr)
-            
-        #except Exception as e:
-                st.warning("Inventário vazio!", icon="⚠️")
-                pass
+        # except Exception as e:
+        #         st.warning("Inventário vazio!", icon="⚠️")
+        #         pass
         
 
 
