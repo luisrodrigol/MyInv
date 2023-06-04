@@ -178,7 +178,7 @@ def main():
                       else:
                         try:                            
                                 
-                            c.execute("INSERT INTO inventario (inv_id,descricao,categoria,local,ambiente,valor,data_aquisicao) values(?,?,?,?,?,?,?)",(st.session_state.invid[0],descricao,categoria,invop[0],ambiente,valor,datade)).connection.commit()
+                            c.execute("INSERT INTO inventario (inv_id,descricao,categoria,local,ambiente,valor,data_aquisicao) values(?,?,?,UPPER(?),?,?,?)",(st.session_state.invid[0],descricao,categoria,invop[0],ambiente,valor,datade)).connection.commit()
                             st.success('Ativo adicionado com sucesso!')
 
                         except Exception as e:
