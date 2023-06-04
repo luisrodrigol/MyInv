@@ -7,7 +7,7 @@ from streamlit_cookies_manager import EncryptedCookieManager
 import sqlite3
 from streamlit_extras.metric_cards import style_metric_cards
 from streamlit_extras.chart_container import chart_container
-import pandas_profiling
+import ydata_profiling
 from streamlit_pandas_profiling import st_profile_report
 import locale
 import altair as alt
