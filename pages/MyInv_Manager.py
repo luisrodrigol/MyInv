@@ -81,7 +81,7 @@ def main():
                 if name != '':
                     conn = sqlite3.connect('myinv.db',timeout=1)
                     c = conn.cursor()                    
-                    c.execute("INSERT INTO inventarios(name,user) VALUES(?,?)",(name,user))                    
+                    c.execute("INSERT INTO inventarios(name,user) VALUES(UPPER(?),?)",(name,user))                    
                     conn.commit()
                     conn.close()                    
                     st.success("Inventário criado com sucesso!")                    
