@@ -114,7 +114,7 @@ def main():
             else: dataparab = None
 
             
-            busca=c.execute('SELECT ativo_id as "ATIVO", descricao as "DESCRICAO",categoria as "CATEGORIA",local as "LOCAL",ambiente as "AMBIENTE",valor as "VALOR",data_aquisicao as "DATA DA AQUISICÃO" from inventario where inv_id=?1 and ativo_id = coalesce(?2,ativo_id) and descricao = coalesce(?3,descricao) and categoria = coalesce(?4,categoria) and ambiente = coalesce(?5,ambiente) and valor = coalesce(?6,valor) and data_aquisicao >= coalesce(?7,data_aquisicao) and data_aquisicao <= coalesce(?8,data_aquisicao)',(st.session_state.invid[0],ativob,descricaob,categoriab,ambienteb,valorb,datadeb,dataparab)).fetchall()
+            busca=c.execute('SELECT ativo_id as "ATIVO", descricao as "DESCRICAO",categoria as "CATEGORIA",local as "LOCAL",ambiente as "AMBIENTE",valor as "VALOR",data_aquisicao as "DATA DA AQUISICÃO" from inventario where inv_id=?1 and ativo_id = coalesce(?2,ativo_id) and descricao = coalesce(UPPER(?3),descricao) and categoria = coalesce(UPPER(?4),categoria) and ambiente = coalesce(UPPER(?5),ambiente) and valor = coalesce(?6,valor) and data_aquisicao >= coalesce(?7,data_aquisicao) and data_aquisicao <= coalesce(?8,data_aquisicao)',(st.session_state.invid[0],ativob,descricaob,categoriab,ambienteb,valorb,datadeb,dataparab)).fetchall()
             
             return busca
 
@@ -178,7 +178,8 @@ def main():
                       else:
                         try:                            
                                 
-                            c.execute("INSERT INTO inventario (inv_id,descricao,categoria,local,ambiente,valor,data_aquisicao) values(?,?,?,?,?,?,?)",(st.session_state.invid[0],descricao,categoria,invop[0],ambiente,valor,datade)).connection.commit()
+                            c.execute("INSERT INTO inventario (inv_id,descricao,categoria,local,ambiente,valor,data_aquisicao) values(?,UPPER(?),UPPER(?),?,UPPER(?),?,?)",(st.session_state.invid[0],descricao,categoria,invop[0],ambiente,valor,datade))
+                            conn.commit()
                             st.success('Ativo adicionado com sucesso!')
 
                         except Exception as e:
@@ -208,7 +209,8 @@ def main():
                           
                       else:
                           try:
-                              c.execute("UPDATE inventario set descricao = ? where inv_id = ? and ativo_id = ?",(descricao,st.session_state.invid[0],ativo)).connection.commit()
+                              c.execute("UPDATE inventario set descricao = UPPER(?) where inv_id = ? and ativo_id = ?",(descricao,st.session_state.invid[0],ativo))
+                              conn.commit()
                               st.success("Alteração realizada!")
                           except Exception as e:
                             st.warning("A alteração não pode ser realizada!", icon="⚠️")
@@ -226,7 +228,8 @@ def main():
                      #st.write(valida[0])
                      
                         try:      
-                                c.execute("DELETE FROM inventario where ativo_id = ?",[ativo]).connection.commit()                               
+                                c.execute("DELETE FROM inventario where ativo_id = ?",[ativo])
+                                conn.commit()
                                 st.success("Ativo baixado com sucesso!")
 
                         except Exception as e:
