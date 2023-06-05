@@ -351,7 +351,7 @@ def main():
             st_profile_report(pr)
             
         except Exception as e:
-                st.warning("Inventário vazio!", icon="⚠️")
+                st.warning("Inventário vazio ou sem valores para comparar!", icon="⚠️")
                 pass
         
 
